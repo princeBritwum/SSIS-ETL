@@ -44,6 +44,9 @@ The client has daily sales transactions exported from an Sales Application to Az
 ### 3. Load Data from Shared Folder to Staging Table in MSSQL using SSIS
 - Open Visual Studio as Administrator  (SSMS) and open the NYC_Package.dtsx file. Once opened, you will identify two tasks ; The Execute SQL Task and the Data Flow Task. The Execute SQL Task runs the procedure [ProdecuereLoadData.sql] every night to load the daily transaction file from the Data Lake storage into the Staging Table in the Datawarehouse. Take note that we caould also use the Bulk Insert Task to similarly load Data into the Staging table. But for the purposes of this Tutorial, we will use the Stored Procedure.
 - When the Data is Loaded, We do some transformation by 
+![Data/ControlFlow.png](https://github.com/princeBritwum/SSIS-ETL/blob/main/Data/ControlFlow.png)
+
+
 - Execute the stored procedure to bulk insert data from an Excel file into the staging table:
 
   -----------------------------------------
