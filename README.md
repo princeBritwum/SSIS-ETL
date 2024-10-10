@@ -61,7 +61,7 @@ We will use merge join to join it with our transaction Data to get more granular
 
 ### 5. Query Data from Data Warehouse
 - Now our Job is almost done, we have followed through the ETL to load data from two Sources into an MSSQL Datawarehouse, Lets Select from the DW Table to confirm if our data was truly loaded.
-We will run the query below to get the total sales for the first Week of the month of May grouped by the PaymentType which was in the Payement Table
+- We will run the query below to get the total sales for the first Week of the month of May grouped by the PaymentType which was in the Payement Table, We can run other queries against the DW warehouse table to get more insight into the trends and pattern of customers.
 
   ```sql
   SELECT
