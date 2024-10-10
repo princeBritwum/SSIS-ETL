@@ -41,20 +41,44 @@ The client has daily sales transactions exported from an Sales Application to Az
 ### 2. Create the Stored Procedure
 - Run the `ProdecuereLoadData.sql` script to create the stored procedure that handles the bulk insert.
 
-### 3. Load Data from Shared Folder to Staging Table in MSSQL using SSIS
+### 3. Extract Data from Shared Folder and MSSQL DB int the to Staging Table in MSSQL using SSIS
 - Open Visual Studio as Administrator  (SSMS) and open the NYC_Package.dtsx file. Once opened, you will identify two tasks ; The Execute SQL Task and the Data Flow Task. The Execute SQL Task runs the procedure [ProdecuereLoadData.sql] every night to load the daily transaction file from the Data Lake storage into the Staging Table in the Datawarehouse. Take note that we caould also use the Bulk Insert Task to similarly load Data into the Staging table. But for the purposes of this Tutorial, we will use the Stored Procedure.
-- When the Data is Loaded, We do some transformation by 
-![Data/ControlFlow.png](https://github.com/princeBritwum/SSIS-ETL/blob/main/Data/ControlFlow.png)
-The transformation is done at the data flow. In addition to the transaction data from Data Lake, we also have payment data residing on another Mssql.
+  
+![Data/ExecuteSQL Task.png](https://github.com/princeBritwum/SSIS-ETL/blob/main/Data/ExecuteSQL%20Task.png?raw=true)
 
+
+### 4. Load Data from Staging Table, Apply Transformation and Load in to Datawarehouse Table in MSSQL using Data Flow Task
+
+- When the Data is Loaded, We do some transformation by merging payment details to the Transaction Data.
+
+![Data/ControlFlow.png](https://github.com/princeBritwum/SSIS-ETL/blob/main/Data/ControlFlow.png)
+
+The transformation is done at the data flow. In addition to the transaction data from Data Lake, we also have payment data residing on another Mssql.
 We will use merge join to join it with our transaction Data to get more granular details for analysis and insight.
 
--There after, we will Load the Merged data into our Data Warehouse Table 
+-There after, we will Load the Merged data into our Data Warehouse Table
+![Data/DataFlow.png](https://github.com/princeBritwum/SSIS-ETL/blob/main/Data/DataFlow.png?raw=true)
 
-  -----------------------------------------
+### 5. Query Data from Data Warehouse
+- Now our Job is almost done, we have followed through the ETL to load data from two Sources into an MSSQL Datawarehouse, Lets Select from the DW Table to confirm if our data was truly loaded.
+We will run the query below to get the total sales for the first Week of the month of May grouped by the PaymentType which was in the Payement Table
+
+  ```sql
+  SELECT
+        A.[PaymentType],
+        CAST( A.[tpep_pickup_datetime] AS DATE) Date,
+        COUNT(A.[passenger_count]) AS "PassengerCount",
+        SUM(A.[total_amount]) Total_Sales
+  
+    FROM [AWDW2022].[dbo].[DWNycTrip] A
+    WHERE DAY(CAST( A.[tpep_pickup_datetime] AS DATE)) >=1 
+    AND DAY(CAST( A.[tpep_pickup_datetime] AS DATE)) <= 7
+    GROUP BY A.[PaymentType], CAST( A.[tpep_pickup_datetime] AS DATE)
+    ORDER BY CAST( A.[tpep_pickup_datetime] AS DATE)
 
 
+- The result of the query run is below;
+![Data/Result.png](https://github.com/princeBritwum/SSIS-ETL/blob/main/Data/Result.png?raw=true)
 
-```sql
-EXEC [dbo].[ImportExcelData] @FilePath = 'C:\path_to_your_file\sample-data.xlsx';
 
+### 6. Now we will schedule this SSIS Package to run every night using Task Scheduler.
