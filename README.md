@@ -1,6 +1,6 @@
 # SSIS-ETL
 
-In this Project I make use of SSIS to Extract Transform and Load Data from a shared folder into a DataWarehouse.
+In this Project I make use of SSIS to Extract Transform and Load Data from a shared folder into an MSSQL and Snowflake DataWarehouse.
 
 # Bulk Insert Excel to Data Warehouse
 
@@ -79,6 +79,16 @@ We will use merge join to join it with our transaction Data to get more granular
 
 - The result of the query run is below;
 ![Data/Result.png](https://github.com/princeBritwum/SSIS-ETL/blob/main/Data/Result.png?raw=true)
+
+### 6. Migrate data from MSSQL to Snowflake Datawarehouse
+
+We all know managing Datawarehouse on Premise is a hustle and our customer knows and experience that too, They are looking to Migrate to Snowflake, a cloud based Datawarehouse with flexibilty to increase compute power and storage in a split second. 
+- To begin we will set up our Snowflake Datawarehouse and Database.
+- We will then setup a pipeline in our existing SSIS package to load data from our MSSQL Database to our Snowflake Datawarehouse
+
+- We will create our Database and Table in our Datawarehouse as below
+- 
+
 
 
 ### 6. Now we will schedule this SSIS Package to run every night using Task Scheduler.
