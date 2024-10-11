@@ -87,8 +87,9 @@ We all know managing Datawarehouse on Premise is a hustle and our customer knows
 - We will then setup a pipeline in our existing SSIS package to load data from our MSSQL Database to our Snowflake Datawarehouse
 
 - We will create our Database and Table in our Datawarehouse as below
-- 
+![Data/SnowflakeDBTable.png](https://github.com/princeBritwum/SSIS-ETL/blob/main/Data/SnowflakeDBTable.png?raw=true)
 
+### 7. Now we will Update our SSIS Package below to accomodate snowflake Datawarehouse.
 
+![Data/SSIS-Snow.png](https://github.com/princeBritwum/SSIS-ETL/blob/main/Data/SSIS-Snow.png?raw=true)
 
-### 6. Now we will schedule this SSIS Package to run every night using Task Scheduler.
